@@ -15,5 +15,13 @@ EOT
     item_type = optional(string)
     metadata  = optional(map(string))
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.radar_value_lists : (
+        v.item_type == null || (contains(["account", "card_bin", "card_fingerprint", "case_sensitive_string", "country", "crypto_fingerprint", "customer_id", "email", "ip_address", "sepa_debit_fingerprint", "string", "us_bank_account_fingerprint"], v.item_type))
+      )
+    ])
+    error_message = "must be one of: \"account\", \"card_bin\", \"card_fingerprint\", \"case_sensitive_string\", \"country\", \"crypto_fingerprint\", \"customer_id\", \"email\", \"ip_address\", \"sepa_debit_fingerprint\", \"string\", \"us_bank_account_fingerprint\""
+  }
 }
 
